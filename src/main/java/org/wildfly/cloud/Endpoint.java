@@ -22,10 +22,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+@Path("")
 public class Endpoint {
 
     @GET
-    @Path("")
     @Produces(APPLICATION_JSON)
     public String getHelloWorldJSON() {
         return "{\"result\":\"OK\"}";
