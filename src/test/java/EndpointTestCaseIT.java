@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 import io.dekorate.testing.annotation.Inject;
 import io.dekorate.testing.annotation.KubernetesIntegrationTest;
@@ -37,6 +36,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @KubernetesIntegrationTest(readinessTimeout = 450000L)
@@ -48,11 +48,13 @@ public class EndpointTestCaseIT {
     @Inject
     private KubernetesList list;
 
+    @BeforeEach
+    public void waitForWildFlyReady() {
+        waitUntilReady(30000);
+    }
 
     @Test
     public void shouldRespondWithHelloWorld() throws IOException {
-        waitUntilReady(30000);
-
         Assertions.assertNotNull(client);
         Assertions.assertNotNull(list);
         for (Pod p : client.pods().list().getItems()) {

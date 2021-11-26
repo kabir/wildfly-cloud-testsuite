@@ -31,10 +31,12 @@ import io.dekorate.kubernetes.annotation.KubernetesApplication;
 import io.dekorate.kubernetes.annotation.Port;
 import io.dekorate.kubernetes.annotation.Probe;
 
-@KubernetesApplication(ports = {
-        @Port(name = "web", containerPort = 8080),
-        @Port(name = "admin", containerPort = 9990)},
-        envVars = @Env(name = "SERVER_PUBLIC_BIND_ADDRESS", value = "0.0.0.0"),
+@KubernetesApplication(
+        ports = {
+                @Port(name = "web", containerPort = 8080),
+                @Port(name = "admin", containerPort = 9990)},
+        envVars = {
+                @Env(name = "SERVER_PUBLIC_BIND_ADDRESS", value = "0.0.0.0")},
         imagePullPolicy = Always)
 @ApplicationPath("")
 public class MyApp extends Application {
