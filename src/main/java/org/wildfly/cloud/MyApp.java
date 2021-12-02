@@ -29,14 +29,17 @@ import javax.ws.rs.core.Application;
 import io.dekorate.kubernetes.annotation.Env;
 import io.dekorate.kubernetes.annotation.KubernetesApplication;
 import io.dekorate.kubernetes.annotation.Port;
-import io.dekorate.kubernetes.annotation.Probe;
 
 @KubernetesApplication(
         ports = {
                 @Port(name = "web", containerPort = 8080),
-                @Port(name = "admin", containerPort = 9990)},
+                @Port(name = "admin", containerPort = 9990)
+        },
         envVars = {
-                @Env(name = "SERVER_PUBLIC_BIND_ADDRESS", value = "0.0.0.0")},
+                @Env(name = "SERVER_PUBLIC_BIND_ADDRESS", value = "0.0.0.0"),
+                @Env(name = "WILDFLY_OVERRIDING_ENV_VARS", value = "1"),
+                @Env(name = "SUBSYSTEM_LOGGING_ROOT_LOGGER_ROOT__LEVEL", value = "DEBUG")
+        },
         imagePullPolicy = Always)
 @ApplicationPath("")
 public class MyApp extends Application {

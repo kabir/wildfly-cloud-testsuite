@@ -21,6 +21,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- The versions for BOMs, Dependencies and Plugins -->
         <version.server.bom>25.0.1.Final</version.server.bom>
+        <!-- The versions for BOMs, Dependencies and Plugins -->
+        <version.server>26.0.0.Beta1-SNAPSHOT</version.server>
         <version.maven-failsafe-plugin>3.0.0-M3</version.maven-failsafe-plugin>
     </properties>
     <dependencyManagement>
@@ -42,11 +44,23 @@
             <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.dekorate</groupId>
+            <artifactId>kubernetes-annotations</artifactId>
+            <version>2.7.0</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>io.dekorate</groupId>
             <artifactId>kubernetes-junit</artifactId>
             <version>2.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-dmr</artifactId>
+            <version>1.6.1.Final</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -99,11 +113,11 @@
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
-                <version>3.0.0.Alpha2</version>
+                <version>3.0.0.Alpha3</version>
                 <configuration>
                     <feature-packs>
                         <feature-pack>
-                            <location>org.wildfly:wildfly-galleon-pack:25.0.1.Final</location>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.server}</location>
                         </feature-pack>
                     </feature-packs>
                     <layers>
