@@ -22,7 +22,7 @@
         <!-- The versions for BOMs, Dependencies and Plugins -->
         <version.server.bom>25.0.1.Final</version.server.bom>
         <!-- The versions for BOMs, Dependencies and Plugins -->
-        <version.server>26.0.0.Beta1-SNAPSHOT</version.server>
+        <version.server>26.0.0.Beta1</version.server>
         <version.maven-failsafe-plugin>3.0.0-M3</version.maven-failsafe-plugin>
     </properties>
     <dependencyManagement>
