@@ -26,6 +26,7 @@ import static io.dekorate.kubernetes.annotation.ImagePullPolicy.Always;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import io.dekorate.docker.annotation.DockerBuild;
 import io.dekorate.kubernetes.annotation.Env;
 import io.dekorate.kubernetes.annotation.KubernetesApplication;
 import io.dekorate.kubernetes.annotation.Port;
@@ -41,6 +42,8 @@ import io.dekorate.kubernetes.annotation.Port;
                 @Env(name = "SUBSYSTEM_LOGGING_ROOT_LOGGER_ROOT__LEVEL", value = "DEBUG")
         },
         imagePullPolicy = Always)
+// The properties set here are guesses
+@DockerBuild(image = "wildfly/simple-test-case", enabled = false, autoPushEnabled = true, autoBuildEnabled = true)
 @ApplicationPath("")
 public class MyApp extends Application {
 
