@@ -44,7 +44,8 @@ import org.jboss.dmr.ModelNode;
 public class TestHelper {
     static boolean waitUntilWildFlyIsReady(KubernetesClient k8sClient, String podName, String containerName, long delay) {
         long start = System.currentTimeMillis();
-        try {
+        long spent = System.currentTimeMillis() - start;
+        while (spent < delay) {
             try (LocalPortForward p = k8sClient.services().withName("wildfly-cloud-testsuite").portForward(9990)) { //port matches what is configured in properties file
                 assertTrue(p.isAlive());
                 URL url = new URL("http://localhost:" + p.getLocalPort() + "/health/ready");
@@ -57,22 +58,27 @@ public class TestHelper {
                 if (response.code() == 200) {
                     String log = k8sClient.pods().withName(podName).inContainer(containerName).getLog();
                     if (log.contains("WFLYSRV0025")) {
+                        System.out.println("Returning true");
                         return true;
                     }
                 }
-                long spent = System.currentTimeMillis() - start;
-                if (spent < delay) {
-                    try {
-                        Thread.sleep(delay / 10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            } catch (IOException e) {
+                // Might happen if the container is not up yet
+            }
+            spent = System.currentTimeMillis() - start;
+            if (spent < delay) {
+                try {
+                    Thread.sleep(delay / 10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.interrupted();
+                    break;
                 }
             }
-        } catch (IOException e) {
         }
         return false;
     }
+
 
     static ModelNode executeCLICommands(KubernetesClient client, String podName, String containerName, String... commands) {
         String bashCmdTemplate = String.format("$JBOSS_HOME/bin/jboss-cli.sh  -c --commands=\"%s\"", Arrays.stream(commands).collect(Collectors.joining(",")));
